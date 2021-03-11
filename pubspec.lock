@@ -97,25 +97,39 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  flutter_radio:
+  flutter_launcher_icons:
     dependency: "direct main"
     description:
-      name: flutter_radio
+      name: flutter_launcher_icons
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.8"
+    version: "0.7.5"
+  flutter_radio_player:
+    dependency: "direct main"
+    description:
+      name: flutter_radio_player
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.0.7"
   flutter_svg:
     dependency: "direct main"
     description:
       name: flutter_svg
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.17.4"
+    version: "0.18.1"
   flutter_test:
     dependency: "direct dev"
     description: flutter
     source: sdk
     version: "0.0.0"
+  image:
+    dependency: transitive
+    description:
+      name: image
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.1.19"
   logging:
     dependency: transitive
     description:
@@ -247,20 +261,20 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0-nullsafety.3"
-  wave_progress_bars:
-    dependency: "direct main"
-    description:
-      name: wave_progress_bars
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.1.0"
   xml:
     dependency: transitive
     description:
       name: xml
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.7.0"
+    version: "4.5.1"
+  yaml:
+    dependency: transitive
+    description:
+      name: yaml
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.2.1"
 sdks:
   dart: ">=2.10.0-110 <2.11.0"
-  flutter: ">=1.16.0 <2.0.0"
+  flutter: ">=1.18.0-6.0.pre <2.0.0"

@@ -31,14 +31,26 @@ Widget cbutton(String symbol) {
 
 Widget dbutton(IconData icon) {
   return Container(
-    padding: EdgeInsets.fromLTRB(25, 25, 20, 20),
-    height: 80,
-    width: 80,
-    decoration: BoxDecoration(
-      image: DecorationImage(
-        image: AssetImage(button),
+      padding: EdgeInsets.fromLTRB(25, 25, 20, 20),
+      height: 80,
+      width: 80,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(button),
+        ),
       ),
-    ),
-    child: Icon(icon, color: cblue)
-  );
+      child: Icon(icon, color: cblue));
+}
+
+Widget pbutton() {
+  return Container(
+      padding: EdgeInsets.fromLTRB(25, 25, 20, 20),
+      height: 80,
+      width: 80,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage(button),
+        ),
+      ),
+      child: Image.asset(albumart));
 }

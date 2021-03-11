@@ -45,11 +45,17 @@ class _RadioSplashState extends State<RadioSplash> {
       body: Stack(
         children: [
           Center(
+              child: CircleAvatar(
+            backgroundColor: Colors.white,
+            radius: 200,
+            child: ClipRRect(
               child: Image.asset(
-            'assets/images/center.jpg',
-            fit: BoxFit.cover,
-            // height: 300,
-            // width: 300
+                'assets/images/center.jpg',
+                fit: BoxFit.cover,
+                // height: 300,
+                // width: 300
+              ),
+            ),
           )),
           Container(
               alignment: Alignment.bottomCenter,
@@ -58,7 +64,7 @@ class _RadioSplashState extends State<RadioSplash> {
                 "Radio East",
                 style: TextStyle(
                   color: Colors.black,
-                  fontSize: 20,
+                  fontSize: 30,
                   fontStyle: FontStyle.italic,
                 ),
               )),

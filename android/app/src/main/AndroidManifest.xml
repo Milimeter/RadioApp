@@ -6,10 +6,15 @@
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
          <uses-permission android:name="android.permission.INTERNET" />
+         <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="Radio East"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/launcher_icon"
+        android:usesCleartextTraffic="true">
+        
+        <service android:name=".core.StreamingCore"/>
+        
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
