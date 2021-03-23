@@ -1,4 +1,4 @@
-package com.example.radio_app
+package com.client.radio.app
 
 import io.flutter.embedding.android.FlutterActivity
 

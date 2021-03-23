@@ -127,219 +127,215 @@ class _RadioPlayerScreenState extends State<RadioPlayerScreen> {
 
     if (noInternet == true) {
       navigate();
-    }else{
+    } else {
       initRadioService();
     }
     return Scaffold(
       backgroundColor: cwhite,
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            SizedBox(
-              height: 30,
-            ),
-
-            //Now we will create Navigation Buttons
-            Row(
-              children: <Widget>[
-                SizedBox(
-                  width: 10,
-                ),
-                GestureDetector(
-                  child: pbutton(),
-                  onTap: () {},
-                ),
-                Spacer(),
-                Text(
-                  'RADIO EAST',
-                  style: TextStyle(
-                      color: cblue, fontSize: 17, fontWeight: FontWeight.w300),
-                ),
-                Spacer(),
-                //dbutton(Icons.radio),
-                pbutton(),
-                SizedBox(
-                  width: 20,
-                ),
-              ],
-            ),
-
-            //Now we will create Album Art Disk
-            Container(
-              padding: EdgeInsets.all(50),
-              height: 350,
-              width: 350,
-              decoration: BoxDecoration(
-                image: DecorationImage(image: AssetImage(disk)),
+      body: Container(
+        height: MediaQuery.of(context).size.height,
+        child: SingleChildScrollView(
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: 30,
               ),
-              child: CircleAvatar(
-                  backgroundImage: AssetImage(albumart),
-                  child: CircleAvatar(
-                    backgroundColor: cwhite,
-                    radius: 25,
+
+              //Now we will create Navigation Buttons
+              Row(
+                children: <Widget>[
+                  SizedBox(
+                    width: 10,
+                  ),
+                  GestureDetector(
+                    child: pbutton(),
+                    onTap: () {},
+                  ),
+                  Spacer(),
+                  Text(
+                    'RADIO EAST',
+                    style: TextStyle(
+                        color: cblue,
+                        fontSize: 17,
+                        fontWeight: FontWeight.w300),
+                  ),
+                  Spacer(),
+                  //dbutton(Icons.radio),
+                  pbutton(),
+                  SizedBox(
+                    width: 20,
+                  ),
+                ],
+              ),
+
+              //Now we will create Album Art Disk
+              Container(
+                padding: EdgeInsets.all(50),
+                height: 350,
+                width: 350,
+                decoration: BoxDecoration(
+                  image: DecorationImage(image: AssetImage(disk)),
+                ),
+                child: CircleAvatar(
+                    backgroundImage: AssetImage(albumart),
+                    child: CircleAvatar(
+                      backgroundColor: cwhite,
+                      radius: 25,
+                    )),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              // Now we will create Song Title and Artist name Texts
+              Text(
+                "Radio East",
+                style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Text(
+                "Streaming",
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w300),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+
+              StreamBuilder(
+                  stream: _flutterRadioPlayer.isPlayingStream,
+                  initialData: playerState,
+                  builder:
+                      (BuildContext context, AsyncSnapshot<String> snapshot) {
+                    String returnData = snapshot.data;
+                    print("object data: " + returnData);
+                    switch (returnData) {
+                      // case FlutterRadioPlayer.flutter_radio_stopped:
+                      //   return GestureDetector(
+                      //       child: dbutton(Iconsclose)
+                      //       onTap: () async {
+                      //         await initRadioService();
+                      //       });
+                      //   break;
+                      case FlutterRadioPlayer.flutter_radio_loading:
+                        return Text(
+                          "Loading stream...",
+                          style: TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.w300),
+                        );
+                      case FlutterRadioPlayer.flutter_radio_error:
+                        return GestureDetector(
+                            child: dbutton(Icons.refresh_rounded),
+                            onTap: () async {
+                              await initRadioService();
+                            });
+                        break;
+                      default:
+                        return Row(
+                            //crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                              GestureDetector(
+                                onTap: () async {
+                                  print("button press data: " +
+                                      snapshot.data.toString());
+                                  await _flutterRadioPlayer.playOrPause();
+                                },
+                                child: snapshot.data ==
+                                        FlutterRadioPlayer.flutter_radio_playing
+                                    ? dbutton(Icons.pause)
+                                    : dbutton(Icons.play_arrow),
+                              ),
+                              // IconButton(
+                              //   onPressed: () async {
+                              //     print("button press data: " +
+                              //         snapshot.data.toString());
+                              //     await _flutterRadioPlayer.playOrPause();
+                              //   },
+                              //   icon: snapshot.data ==
+                              //           FlutterRadioPlayer.flutter_radio_playing
+                              //       ? dbutton(Icons.pause)
+                              //       : dbutton(Icons.play_arrow),
+                              // ),
+                              GestureDetector(
+                                onTap: () async {
+                                  await _flutterRadioPlayer.stop();
+                                  await initRadioService();
+                                },
+                                child: dbutton(Icons.stop),
+                              ),
+                              // IconButton(
+                              //   onPressed: () async {
+                              //     await _flutterRadioPlayer.stop();
+                              //   },
+                              //   icon: dbutton(Icons.stop),
+                              // )
+                            ]);
+                        break;
+                    }
+                  }),
+              Slider(
+                  activeColor: cblue,
+                  inactiveColor: cblue,
+                  value: volume,
+                  min: 0,
+                  max: 1.0,
+                  onChanged: (value) => setState(() {
+                        volume = value;
+                        _flutterRadioPlayer.setVolume(volume);
+                      })),
+              Text("Volume: " + (volume * 100).toStringAsFixed(0),
+                  style: TextStyle(
+                    fontSize: 25,
+                    fontWeight: FontWeight.w300,
+                    color: cblue,
                   )),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            // Now we will create Song Title and Artist name Texts
-            Text(
-              "Radio East",
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.w900),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              "Streaming",
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w300),
-            ),
-            SizedBox(
-              height: 20,
-            ),
 
-            StreamBuilder(
-                stream: _flutterRadioPlayer.isPlayingStream,
-                initialData: playerState,
-                builder:
-                    (BuildContext context, AsyncSnapshot<String> snapshot) {
-                  String returnData = snapshot.data;
-                  print("object data: " + returnData);
-                  switch (returnData) {
-                    // case FlutterRadioPlayer.flutter_radio_stopped:
-                    //   return GestureDetector(
-                    //       child: dbutton(Iconsclose)
-                    //       onTap: () async {
-                    //         await initRadioService();
-                    //       });
-                    //   break;
-                    case FlutterRadioPlayer.flutter_radio_loading:
-                      return Text(
-                        "Loading stream...",
-                        style: TextStyle(
-                            fontSize: 25, fontWeight: FontWeight.w300),
-                      );
-                    case FlutterRadioPlayer.flutter_radio_error:
-                      return GestureDetector(
-                          child: dbutton(Icons.refresh_rounded),
-                          onTap: () async {
-                            await initRadioService();
-                          });
-                      break;
-                    default:
-                      return Row(
-                          //crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            GestureDetector(
-                              onTap: () async {
-                                print("button press data: " +
-                                    snapshot.data.toString());
-                                await _flutterRadioPlayer.playOrPause();
-                              },
-                              child: snapshot.data ==
-                                      FlutterRadioPlayer.flutter_radio_playing
-                                  ? dbutton(Icons.pause)
-                                  : dbutton(Icons.play_arrow),
-                            ),
-                            // IconButton(
-                            //   onPressed: () async {
-                            //     print("button press data: " +
-                            //         snapshot.data.toString());
-                            //     await _flutterRadioPlayer.playOrPause();
-                            //   },
-                            //   icon: snapshot.data ==
-                            //           FlutterRadioPlayer.flutter_radio_playing
-                            //       ? dbutton(Icons.pause)
-                            //       : dbutton(Icons.play_arrow),
-                            // ),
-                            GestureDetector(
-                              onTap: () async {
-                                await _flutterRadioPlayer.stop();
-                                 await initRadioService();
-                              },
-                              child: dbutton(Icons.stop),
-                            ),
-                            // IconButton(
-                            //   onPressed: () async {
-                            //     await _flutterRadioPlayer.stop();
-                            //   },
-                            //   icon: dbutton(Icons.stop),
-                            // )
-                          ]);
-                      break;
-                  }
-                }),
-            Slider(
-                activeColor: cblue,
-                inactiveColor: cblue,
-                value: volume,
-                min: 0,
-                max: 1.0,
-                onChanged: (value) => setState(() {
-                      volume = value;
-                      _flutterRadioPlayer.setVolume(volume);
-                    })),
-            Text("Volume: " + (volume * 100).toStringAsFixed(0),
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.w300,
-                  color: cblue,
-                )),
+              //Now we will create Music Controller Buttons
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.center,
+              //   children: <Widget>[
+              //     GestureDetector(
+              //       onTap: () {
+              //         FlutterRadio.pause(url: url);
+              //       },
+              //       child: dbutton(Icons.pause),
+              //     ),
+              //     //The buttons are called passing its above symbol
+              //     GestureDetector(
+              //       onTap: () {
+              //         FlutterRadio.play(url: url);
+              //         isPlaying = !isPlaying;
+              //         isVisible = !isVisible;
+              //       },
+              //       child: Center(child: cbutton(play)),
+              //     ),
 
-            //Now we will create Music Controller Buttons
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: <Widget>[
-            //     GestureDetector(
-            //       onTap: () {
-            //         FlutterRadio.pause(url: url);
-            //       },
-            //       child: dbutton(Icons.pause),
-            //     ),
-            //     //The buttons are called passing its above symbol
-            //     GestureDetector(
-            //       onTap: () {
-            //         FlutterRadio.play(url: url);
-            //         isPlaying = !isPlaying;
-            //         isVisible = !isVisible;
-            //       },
-            //       child: Center(child: cbutton(play)),
-            //     ),
+              //     GestureDetector(
+              //       onTap: () {
+              //         FlutterRadio.stop();
+              //       },
+              //       child: dbutton(Icons.pause),
+              //     ),
+              //   ],
+              // ),
 
-            //     GestureDetector(
-            //       onTap: () {
-            //         FlutterRadio.stop();
-            //       },
-            //       child: dbutton(Icons.pause),
-            //     ),
-            //   ],
-            // ),
-
-            SizedBox(
-              height: 20,
-            ),
-            //Now we will create Wave song progress bar
-            
-            SizedBox(
-              height: 10,
-            ),
-
-            // Now we will create Song TimeStamp
-            // RichText(
-            //   text: TextSpan(
-            //       style: TextStyle(
-            //           color: cblue.withAlpha(100), fontWeight: FontWeight.bold),
-            //       children: <TextSpan>[
-            //         TextSpan(
-            //             text: '0:54',
-            //             style:
-            //                 TextStyle(color: cblue, fontWeight: FontWeight.bold)),
-            //         TextSpan(text: ' | '),
-            //         TextSpan(text: '03:15')
-            //       ]),
-            // ),
-          ],
+              //Now we will create Song TimeStamp
+              // RichText(
+              //   text: TextSpan(
+              //       style: TextStyle(
+              //           color: cblue.withAlpha(100), fontWeight: FontWeight.bold),
+              //       children: <TextSpan>[
+              //         TextSpan(
+              //             text: '0:54',
+              //             style:
+              //                 TextStyle(color: cblue, fontWeight: FontWeight.bold)),
+              //         TextSpan(text: ' | '),
+              //         TextSpan(text: '03:15')
+              //       ]),
+              // ),
+            ],
+          ),
         ),
       ),
     );
